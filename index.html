@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baro's Portfolio</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+    
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Light Mode */
+            --bg: #ffffff;
+            --surface: #f4f0ff; 
+            --text: #1e1b4b;
+            --text-light: #6b7280;
+            --purple: #7c3aed;
+            --purple-dark: #5b21b6;
+            --hero-bg-overlay: rgba(255, 255, 255, 0.5);
+            --border: #e5e7eb;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode */
+            --bg: #150f1f; 
+            --surface: #221736;
+            --text: #f8f7fb;
+            --text-light: #a79fc2;
+            --purple: #a78bfa;
+            --purple-dark: #8b5cf6;
+            --hero-bg-overlay: rgba(21, 15, 31, 0.6);
+            --border: #3d2b56;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 110px; }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            line-height: 1.7;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+
+        /* --- NAVBAR --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 1.5rem 0;
+            background: transparent;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            z-index: 100;
+        }
+        nav .nav-container { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 0 4vw;
+        }
+        nav .logo { 
+            font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace; 
+            font-size: 1.8rem; color: var(--purple); font-weight: 800; letter-spacing: -1px;
+        }
+        
+        .nav-right { display: flex; align-items: center; gap: 2rem; }
+        .links a {
+            text-decoration: none; color: var(--text-light);
+            font-size: 1rem; font-weight: 500; transition: color 0.3s;
+            margin-left: 1.5rem;
+        }
+        .links a:hover { color: var(--purple); }
+
+        /* --- MOON / SUN THEME SWITCH --- */
+        .theme-switch {
+            position: relative; display: inline-block;
+            width: 66px; height: 34px; cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .theme-switch input { display: none; }
+        
+        .theme-switch__track {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: #60a5fa; 
+            border-radius: 34px; transition: background 0.4s ease;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .theme-switch__stars {
+            position: absolute; width: 2px; height: 2px;
+            background: white; border-radius: 50%;
+            top: 10px; left: 16px;
+            box-shadow: 12px -2px 0 0 white, 20px 8px 0 -1px white;
+            opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            transform: translateY(15px);
+        }
+        
+        .theme-switch__knob {
+            position: absolute; top: 3px; left: 3px;
+            width: 28px; height: 28px;
+            background: #fde047; 
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2), inset 0 -2px 4px rgba(217,119,6,0.2);
+            z-index: 2;
+        }
+        
+        .theme-switch__knob::after {
+            content: ''; position: absolute;
+            width: 6px; height: 6px; background: rgba(0,0,0,0.12);
+            border-radius: 50%; top: 6px; right: 6px;
+            box-shadow: -5px 9px 0 -1px rgba(0,0,0,0.12), -10px 2px 0 -1px rgba(0,0,0,0.12);
+            opacity: 0; transition: 0.4s;
+        }
+
+        input:checked + .theme-switch__track { background: #1a1025; }
+        input:checked + .theme-switch__track .theme-switch__stars { opacity: 0.8; transform: translateY(0); }
+        input:checked + .theme-switch__track .theme-switch__knob {
+            transform: translateX(32px); background: #e2e8f0; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3), inset -3px -2px 0 rgba(148,163,184,0.5);
+        }
+        input:checked + .theme-switch__track .theme-switch__knob::after { opacity: 1; }
+
+        /* --- HERO --- */
+        .hero {
+            position: relative; min-height: 90vh; display: flex; align-items: center;
+            padding-top: 5rem; overflow: hidden;
+        }
+        
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover; background-position: center; z-index: -2; 
+            opacity: 0.6; 
+            -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+        }
+        
+        .hero-overlay {
+            position: absolute; inset: 0; 
+            background-color: var(--hero-bg-overlay);
+            z-index: -1; 
+            transition: background-color 0.4s ease;
+            -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+        }
+        
+        .hero-content {
+            display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 4rem;
+            animation: fadeInUp 1s ease forwards; width: 100%;
+        }
+        
+        .hero-text { flex: 1; }
+        
+        .hero-text h1 { 
+            font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace; 
+            font-size: 3.5rem; 
+            line-height: 1.3; 
+            color: var(--text); 
+            margin-bottom: 0.5rem; 
+            font-weight: 700;
+        }
+        .hero-text h1 span { color: var(--purple); }
+        .hero-text p.discord-tag {
+            font-size: 1.15rem; font-weight: 500; color: var(--text-light);
+            font-family: 'JetBrains Mono', Consolas, monospace; letter-spacing: 0.5px;
+        }
+
+        .hero-avatar {
+            width: clamp(290px, 28vw, 360px); height: clamp(290px, 28vw, 360px);
+            border-radius: 12px;
+            overflow: hidden; flex-shrink: 0;
+            border: 4px solid var(--bg); box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: border-color 0.4s ease;
+        }
+        .hero-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- ABOUT & CONNECT --- */
+        .about, .connect {
+            position: relative;
+            isolation: isolate;
+            padding: 5rem 0;
+        }
+
+        .about::before,
+        .connect::before {
+            content: '';
+            position: absolute;
+            inset: -12% 0;
+            z-index: -2;
+            pointer-events: none;
+            opacity: 0.72;
+            background:
+                radial-gradient(circle at 18% 28%, rgba(124, 58, 237, 0.12), transparent 34%),
+                radial-gradient(circle at 82% 62%, rgba(59, 130, 246, 0.08), transparent 38%);
+            filter: blur(10px);
+        }
+
+        .connect::before {
+            background:
+                radial-gradient(circle at 72% 18%, rgba(124, 58, 237, 0.10), transparent 34%),
+                radial-gradient(circle at 22% 76%, rgba(168, 85, 247, 0.07), transparent 36%);
+        }
+
+        .about::after,
+        .connect::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.035;
+            background-image: radial-gradient(rgba(255,255,255,0.75) 0.6px, transparent 0.6px);
+            background-size: 5px 5px;
+        }
+
+        /* Light mode background treatment */
+        body:not([data-theme="dark"]) .about::before {
+            opacity: 0.8;
+            background:
+                radial-gradient(circle at 18% 28%, rgba(124, 58, 237, 0.10), transparent 34%),
+                radial-gradient(circle at 82% 62%, rgba(59, 130, 246, 0.07), transparent 38%);
+        }
+
+        body:not([data-theme="dark"]) .connect::before {
+            opacity: 0.8;
+            background:
+                radial-gradient(circle at 72% 18%, rgba(124, 58, 237, 0.085), transparent 34%),
+                radial-gradient(circle at 22% 76%, rgba(168, 85, 247, 0.055), transparent 36%);
+        }
+
+        body:not([data-theme="dark"]) .about::after,
+        body:not([data-theme="dark"]) .connect::after {
+            opacity: 0.025;
+            background-image: radial-gradient(rgba(30,27,75,0.28) 0.55px, transparent 0.55px);
+        }
+        
+        .section-title { 
+            font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace; 
+            font-size: 2.2rem; margin-bottom: 2rem; color: var(--text); font-weight: 700; letter-spacing: -0.5px;
+        }
+        
+        .about-text { font-size: 1.15rem; color: var(--text-light); line-height: 1.9; }
+        .about-name {
+            display: block; margin-bottom: 0.35rem;
+            font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace;
+            font-size: 1.45rem; font-weight: 800; color: var(--text);
+            letter-spacing: -0.4px;
+        }
+        .about-name::after { content: '.'; color: var(--purple); }
+        .about-text strong { color: var(--text); font-weight: 500; }
+        
+        /* --- TAGS & TOOLTIPS --- */
+        .tags { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+        
+        .tag {
+            position: relative;
+            font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace; 
+            padding: 0.6rem 1.4rem; background: var(--surface); color: var(--purple-dark);
+            border-radius: 8px; font-size: 0.95rem; font-weight: 700; 
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.4s ease, color 0.4s ease;
+        }
+        .tag:hover { 
+            transform: translateY(-3px); 
+            background: var(--purple); color: white; 
+        }
+
+        /* Khung Card con (Tooltip Overlay) */
+        .tag-tooltip {
+            position: absolute;
+            bottom: 135%; left: 50%; transform: translateX(-50%) translateY(10px);
+            background: var(--surface); border: 1px solid var(--border);
+            color: var(--text); padding: 0.8rem 1rem; border-radius: 8px;
+            font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500;
+            white-space: nowrap; box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            opacity: 0; visibility: hidden; pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 10;
+        }
+        /* Mũi tên trỏ xuống của Tooltip */
+        .tag-tooltip::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border-width: 6px; border-style: solid;
+            border-color: var(--border) transparent transparent transparent;
+        }
+        
+        /* Bắt cầu (Bridge) để khi di chuột từ Tag lên Tooltip không bị mất hover */
+        .tag::before {
+            content: ''; position: absolute; top: -20px; left: 0; width: 100%; height: 20px;
+        }
+
+        .tag:hover .tag-tooltip {
+            opacity: 1; visibility: visible; pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Design riêng cho Tooltip của Gaming */
+        .game-item {
+            position: relative;
+            padding: 0.5rem 0.5rem;
+            text-align: center; cursor: crosshair; overflow: hidden;
+            width: 140px; border-bottom: 1px solid var(--border);
+        }
+        .game-item:last-child { border-bottom: none; }
+        
+        .g-front { 
+            transition: transform 0.3s ease; font-weight: 600; color: var(--text);
+        }
+        .g-back { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            display: flex; align-items: center; justify-content: center;
+            transform: translateY(100%); transition: transform 0.3s ease;
+            color: var(--purple); font-family: 'JetBrains Mono', monospace; 
+            font-size: 0.85rem; font-weight: bold; background: var(--surface);
+        }
+        
+        .game-item:hover .g-front { transform: translateY(-100%); }
+        .game-item:hover .g-back { transform: translateY(0); }
+
+        /* --- CONNECT LIST --- */
+        .connect-list { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+        .social-btn {
+            display: flex; align-items: center; gap: 0.8rem;
+            padding: 1rem 1.8rem; border-radius: 12px;
+            background: var(--surface); color: var(--text);
+            text-decoration: none; font-weight: 500; font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        .social-btn:hover {
+            background: var(--purple); color: #ffffff; transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.2);
+        }
+        .social-btn svg { width: 24px; height: 24px; fill: currentColor; }
+
+        footer { padding: 3rem 0; text-align: center; color: var(--text-light); font-size: 0.9rem; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (min-width: 1100px) {
+            .hero .container { max-width: 1180px; padding: 0 3rem; }
+            .hero-content { gap: 5.5rem; }
+            .hero-text h1 { font-size: clamp(3.8rem, 4.2vw, 4.6rem); white-space: nowrap; }
+            .hero-avatar { width: clamp(330px, 25vw, 390px); height: clamp(330px, 25vw, 390px); }
+            .hero-text p.discord-tag { margin-top: 0.8rem; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content { flex-direction: column-reverse; text-align: center; gap: 2rem; }
+            .hero-text h1 { font-size: 2.5rem; white-space: normal; }
+            .hero-avatar { width: 180px; height: 180px; }
+            nav .nav-container { padding: 0 2rem; }
+            .nav-right .links { display: none; }
+
+            .about, .connect { scroll-margin-top: 110px; }
+
+            .tags {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1rem;
+            }
+            .tag {
+                width: 100%;
+                text-align: center;
+                min-width: 0;
+            }
+            .tag::before { display: block; }
+            .tag-tooltip {
+                position: absolute;
+                bottom: 135%;
+                width: max-content;
+                max-width: min(280px, calc(100vw - 32px));
+                white-space: normal;
+                overflow-wrap: anywhere;
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+                transition: opacity 0.25s ease, transform 0.25s ease;
+            }
+
+            /* 2-column mobile/tablet layout: keep floating cards inside viewport */
+            .tags .tag:nth-child(odd) .tag-tooltip {
+                left: 0;
+                right: auto;
+                transform: translateY(10px);
+            }
+            .tags .tag:nth-child(even) .tag-tooltip {
+                left: auto;
+                right: 0;
+                transform: translateY(10px);
+            }
+            .tags .tag:nth-child(odd):hover .tag-tooltip,
+            .tags .tag:nth-child(odd):focus-within .tag-tooltip,
+            .tags .tag:nth-child(even):hover .tag-tooltip,
+            .tags .tag:nth-child(even):focus-within .tag-tooltip {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                transform: translateY(0);
+            }
+
+            .game-item { width: 140px; max-width: 100%; }
+
+            .connect-list { flex-direction: column; }
+            .social-btn { justify-content: center; }
+        }
+
+        @media (max-width: 520px) {
+            html { scroll-padding-top: 90px; }
+            .container { padding: 0 2rem; }
+            .about, .connect { scroll-margin-top: 90px; }
+            .tags { grid-template-columns: 1fr; }
+            .tags .tag:nth-child(odd) .tag-tooltip,
+            .tags .tag:nth-child(even) .tag-tooltip {
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%) translateY(10px);
+            }
+            .tags .tag:nth-child(odd):hover .tag-tooltip,
+            .tags .tag:nth-child(odd):focus-within .tag-tooltip,
+            .tags .tag:nth-child(even):hover .tag-tooltip,
+            .tags .tag:nth-child(even):focus-within .tag-tooltip {
+                transform: translateX(-50%) translateY(0);
+            }
+            .section-title { font-size: clamp(1.85rem, 9vw, 2.2rem); }
+            .about-text { font-size: 1.05rem; }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Baro.</div>
+            <div class="nav-right">
+                <div class="links">
+                    <a href="#about">About</a>
+                    <a href="#connect">Connect</a>
+                </div>
+                
+                <label class="theme-switch" aria-label="Toggle Theme">
+                    <input type="checkbox" id="themeToggle" checked>
+                    <div class="theme-switch__track">
+                        <div class="theme-switch__stars"></div>
+                        <div class="theme-switch__knob"></div>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </nav>
+
+    <!--
+        TODO / FUTURE BACKGROUND NOTE:
+        - Nếu muốn thay background chính của portfolio, ưu tiên thay ở HERO này.
+        - Background hiện tại nằm trong .hero-bg / background-image.
+        - Nên giữ .hero-overlay để chữ vẫn dễ đọc ở cả light/dark mode.
+        - Ảnh nền chính nên dùng cho HERO, không nên dùng ảnh quá rõ ở About/Connect.
+    -->
+    <section class="hero">
+        <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop');"></div>
+        <div class="hero-overlay"></div>
+        
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1>Welcome to my wall <br><span>- Baro.</span></h1>
+                <p class="discord-tag">@absolutelynotbaro</p>
+            </div>
+            <div class="hero-avatar">
+                <img src="avatar.png" alt="Baro">
+            </div>
+        </div>
+    </section>
+
+    <!--
+        TODO / LOWER PAGE BACKGROUND NOTE:
+        - About + Find Me Online hiện dùng gradient + grain rất nhẹ.
+        - Nếu sau này muốn thêm background ở phần dưới, nên dùng texture/pattern mờ
+          (grid, noise, abstract lines, technical pattern), opacity thấp khoảng 3-8%.
+        - Tránh ảnh nền rõ vì dễ cạnh tranh với text và các social/tag cards.
+    -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            
+            <div class="about-text">
+                <!-- Nội dung đã được chỉnh sửa chuẩn tiếng Anh -->
+                <p><span class="about-name">Vy Gia Bảo</span>Currently based in HCMC. Year 3 at <strong>PTIT</strong> (Posts and Telecommunications Institute of Technology - Học viện Công nghệ Bưu chính Viễn thông).</p>
+            </div>
+            
+            <div class="tags">
+                <!-- Hover vào đây sẽ hiện popup "Currently none." -->
+                <div class="tag">
+                    Technology
+                    <div class="tag-tooltip">Currently learning <strong>Networking</strong> • C++ • Python • Java • SQL</div>
+                </div>
+                
+                <!-- Hover vào đây sẽ hiện ngành học -->
+                <div class="tag">
+                    Learning
+                    <div class="tag-tooltip">Studying Information Security</div>
+                </div>
+                
+                <!-- Hover thẻ Gaming sẽ bung bảng 2 game, hover vô game sẽ flip tên thành Ingame Name! -->
+                <div class="tag">
+                    Gaming
+                    <div class="tag-tooltip" style="padding: 0;">
+                        <div class="game-item">
+                            <div class="g-front">PUBG</div>
+                            <div class="g-back">Baro2886</div>
+                        </div>
+                        <div class="game-item">
+                            <div class="g-front">Minecraft</div>
+                            <div class="g-back">21H1_x64</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Thẻ thay thế: Tinkering (Vọc vạch) -->
+                <div class="tag">
+                    Tinkering
+                    <div class="tag-tooltip">Love tweaking PCs & smartphones.</div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <section id="connect" class="connect">
+        <div class="container">
+            <h2 class="section-title">Find Me Online</h2>
+            <div class="connect-list">
+                
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=jokemc45@gmail.com" target="_blank" rel="noopener noreferrer" class="social-btn">
+                    <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm16 2H4v1.082l8 5.333 8-5.333V6zm-16 3.818V18h16v-8.182l-8 5.333-8-5.333z"/></svg>
+                    Email
+                </a>
+                <a href="https://www.facebook.com/baro2886/" target="_blank" rel="noopener noreferrer" class="social-btn">
+                    <svg viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+                    Facebook
+                </a>
+                <a href="https://discordapp.com/users/absolutelynotbaro" target="_blank" rel="noopener noreferrer" class="social-btn">
+                    <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                    Discord
+                </a>
+                <a href="https://zalo.me/0878844542" target="_blank" rel="noopener noreferrer" class="social-btn">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.037 2 11c0 2.825 1.488 5.352 3.82 7.037L5.053 22l3.415-1.921c1.12.31 2.302.483 3.532.483 5.523 0 10-4.037 10-9s-4.477-9-10-9z"/></svg>
+                    Zalo
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Baro. Always learning.</p>
+        </div>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                body.setAttribute('data-theme', 'dark');
+            } else {
+                body.removeAttribute('data-theme');
+            }
+        });
+    </script>
+</body>
+</html>
