@@ -4,21 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Baro's Portfolio</title>
-
-    <!-- Link preview / Open Graph -->
     <meta name="description" content="Baro's personal portfolio.">
     <meta property="og:title" content="Baro's Portfolio">
     <meta property="og:description" content="Welcome to my wall - Baro.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://baro.indevs.in/">
-    <meta property="og:image" content="https://baro2886.netlify.app/preview.jpg">
+    <meta property="og:image" content="https://baro.indevs.in/preview.jpg">
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="360">
     <meta property="og:image:height" content="360">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Baro's Portfolio">
     <meta name="twitter:description" content="Welcome to my wall - Baro.">
-    <meta name="twitter:image" content="https://baro2886.netlify.app/preview.jpg">
+    <meta name="twitter:image" content="https://baro.indevs.in/preview.jpg">
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
     
@@ -26,7 +24,6 @@
     
     <style>
         :root {
-            /* Light Mode */
             --bg: #ffffff;
             --surface: #f4f0ff; 
             --text: #1e1b4b;
@@ -38,7 +35,6 @@
         }
 
         [data-theme="dark"] {
-            /* Dark Mode */
             --bg: #150f1f; 
             --surface: #221736;
             --text: #f8f7fb;
@@ -62,7 +58,6 @@
 
         .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
 
-        /* --- NAVBAR --- */
         nav {
             position: fixed; top: 0; width: 100%; padding: 1.5rem 0;
             background: transparent;
@@ -73,9 +68,289 @@
             display: flex; justify-content: space-between; align-items: center; 
             padding: 0 4vw;
         }
-        nav .logo { 
-            font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace; 
-            font-size: 1.8rem; color: var(--purple); font-weight: 800; letter-spacing: -1px;
+        nav .logo {
+            position: relative;
+            width: 82px;
+            height: 68px;
+            display: grid;
+            place-items: center;
+            perspective: 720px;
+            perspective-origin: 50% 38%;
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        nav .logo::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 4px;
+            width: 48px;
+            height: 12px;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.32);
+            filter: blur(7px);
+            opacity: 0.72;
+            pointer-events: none;
+        }
+
+        nav .logo:active { cursor: grabbing; }
+
+        .pc-tower {
+            position: relative;
+            width: 36px;
+            height: 54px;
+            transform-style: preserve-3d;
+            transform: rotateX(-20deg) rotateY(38deg);
+            will-change: transform;
+            transition: transform 80ms linear;
+            transform-origin: center center;
+            z-index: 1;
+        }
+
+        .logo:hover .pc-front,
+        .logo:hover .pc-right {
+            box-shadow:
+                inset 0 0 14px rgba(167, 139, 250, 0.12),
+                0 0 8px rgba(167, 139, 250, 0.18);
+        }
+
+        .pc-face {
+            position: absolute;
+            box-sizing: border-box;
+            border: 1px solid color-mix(in srgb, var(--purple) 42%, var(--border));
+            overflow: hidden;
+            backface-visibility: visible;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.16);
+        }
+
+        .pc-front,
+        .pc-back {
+            width: 36px;
+            height: 54px;
+            left: 0;
+            top: 0;
+            border-radius: 6px;
+        }
+
+        .pc-front {
+            transform: translateZ(17px);
+            background:
+                linear-gradient(105deg, rgba(255,255,255,0.12), transparent 42%),
+                linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.16)),
+                linear-gradient(155deg,
+                    color-mix(in srgb, var(--surface) 68%, var(--purple) 32%),
+                    color-mix(in srgb, var(--bg) 76%, #000 24%));
+            box-shadow:
+                inset 2px 0 0 rgba(255,255,255,0.08),
+                inset -3px 0 8px rgba(0,0,0,0.20);
+        }
+
+        .pc-back {
+            transform: rotateY(180deg) translateZ(17px);
+            background:
+                linear-gradient(155deg,
+                    color-mix(in srgb, var(--surface) 82%, #000 18%),
+                    color-mix(in srgb, var(--bg) 62%, #000 38%));
+            box-shadow: inset 0 0 12px rgba(0,0,0,0.30);
+        }
+
+        .pc-left,
+        .pc-right {
+            width: 34px;
+            height: 54px;
+            left: 1px;
+            top: 0;
+            border-radius: 4px;
+        }
+
+        .pc-left {
+            transform: rotateY(-90deg) translateZ(18px);
+            background:
+                linear-gradient(90deg, rgba(255,255,255,0.05), transparent 24%, rgba(0,0,0,0.20)),
+                color-mix(in srgb, var(--surface) 78%, #000 22%);
+            box-shadow:
+                inset 3px 0 8px rgba(255,255,255,0.04),
+                inset -4px 0 10px rgba(0,0,0,0.25);
+        }
+
+        .pc-right {
+            transform: rotateY(90deg) translateZ(18px);
+            box-shadow:
+                inset 3px 0 10px rgba(255,255,255,0.07),
+                inset -5px 0 12px rgba(0,0,0,0.28);
+        }
+
+        .pc-top,
+        .pc-bottom {
+            width: 36px;
+            height: 34px;
+            left: 0;
+            top: 10px;
+            border-radius: 4px;
+        }
+
+        .pc-top {
+            transform: rotateX(90deg) translateZ(27px);
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.16), rgba(167,139,250,0.08) 45%, rgba(0,0,0,0.12)),
+                color-mix(in srgb, var(--surface) 86%, #000 14%);
+            box-shadow: inset 0 -5px 10px rgba(0,0,0,0.18);
+        }
+
+        .pc-bottom {
+            transform: rotateX(-90deg) translateZ(27px);
+            background: color-mix(in srgb, var(--bg) 58%, #000 42%);
+        }
+
+        .front-strip {
+            position: absolute;
+            left: 7px;
+            top: 7px;
+            width: 4px;
+            height: 31px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, rgba(196,181,253,0.98), rgba(124,58,237,0.38));
+            box-shadow: 0 0 10px rgba(167,139,250,0.58);
+        }
+
+        .power-light {
+            position: absolute;
+            right: 8px;
+            bottom: 9px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--purple);
+            box-shadow: 0 0 10px var(--purple);
+        }
+
+        .io {
+            position: absolute;
+            right: 7px;
+            width: 8px;
+            height: 2px;
+            border-radius: 999px;
+            background: rgba(230, 220, 255, 0.82);
+        }
+
+        .io-1 { top: 12px; }
+        .io-2 { top: 17px; }
+
+        .vent-panel::before {
+            content: '';
+            position: absolute;
+            inset: 7px 5px;
+            border-radius: 2px;
+            opacity: 0.88;
+            background:
+                repeating-linear-gradient(
+                    to bottom,
+                    rgba(167,139,250,0.24) 0px,
+                    rgba(167,139,250,0.24) 1px,
+                    transparent 1px,
+                    transparent 4px
+                );
+        }
+
+        .glass-panel {
+            background:
+                linear-gradient(180deg, rgba(167,139,250,0.24), rgba(255,255,255,0.04)),
+                linear-gradient(160deg,
+                    color-mix(in srgb, var(--purple) 20%, var(--surface)),
+                    color-mix(in srgb, var(--bg) 76%, #000 24%));
+            box-shadow: inset 0 0 14px rgba(0,0,0,0.24);
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border-radius: 3px;
+            border: 1px solid rgba(210, 185, 255, 0.34);
+            background:
+                linear-gradient(120deg,
+                    rgba(255,255,255,0.18) 0%,
+                    rgba(255,255,255,0.03) 28%,
+                    transparent 29% 62%,
+                    rgba(167,139,250,0.10) 63% 100%);
+        }
+
+        .glass-panel::after {
+            content: '';
+            position: absolute;
+            width: 7px;
+            height: 82%;
+            top: 9%;
+            left: 7px;
+            transform: skewX(-12deg);
+            border-radius: 999px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.02));
+            opacity: 0.55;
+            pointer-events: none;
+        }
+
+        .fan {
+            position: absolute;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            border: 1px solid rgba(210, 185, 255, 0.40);
+            box-shadow:
+                0 0 8px rgba(167,139,250,0.40),
+                inset 0 0 6px rgba(167,139,250,0.22);
+            background:
+                radial-gradient(circle at center,
+                    rgba(196,181,253,0.95) 0 1.5px,
+                    transparent 1.5px 100%);
+        }
+
+        .fan::before,
+        .fan::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: 50%;
+            border: 1px solid rgba(167,139,250,0.22);
+        }
+
+        .fan-top { top: 8px; }
+        .fan-bottom { bottom: 8px; }
+
+        .gpu-bar {
+            position: absolute;
+            left: 5px;
+            right: 5px;
+            top: 25px;
+            height: 3px;
+            border-radius: 999px;
+            background: rgba(210, 190, 255, 0.72);
+            box-shadow: 0 0 6px rgba(167,139,250,0.34);
+        }
+
+        .top-vents::before {
+            content: '';
+            position: absolute;
+            inset: 5px 6px;
+            border-radius: 2px;
+            opacity: 0.88;
+            background:
+                repeating-linear-gradient(
+                    to right,
+                    rgba(167,139,250,0.25) 0px,
+                    rgba(167,139,250,0.25) 2px,
+                    transparent 2px,
+                    transparent 5px
+                );
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .pc-tower { transition: none; }
         }
         
         .nav-right { display: flex; align-items: center; gap: 2rem; }
@@ -86,7 +361,6 @@
         }
         .links a:hover { color: var(--purple); }
 
-        /* --- MOON / SUN THEME SWITCH --- */
         .theme-switch {
             position: relative; display: inline-block;
             width: 66px; height: 34px; cursor: pointer;
@@ -137,7 +411,6 @@
         }
         input:checked + .theme-switch__track .theme-switch__knob::after { opacity: 1; }
 
-        /* --- HERO --- */
         .hero {
             position: relative; min-height: 90vh; display: flex; align-items: center;
             padding-top: 5rem; overflow: hidden;
@@ -191,7 +464,6 @@
         }
         .hero-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* --- ABOUT & CONNECT --- */
         .about, .connect {
             position: relative;
             isolation: isolate;
@@ -230,7 +502,6 @@
             background-size: 5px 5px;
         }
 
-        /* Light mode background treatment */
         body:not([data-theme="dark"]) .about::before {
             opacity: 0.8;
             background:
@@ -266,7 +537,6 @@
         .about-name::after { content: '.'; color: var(--purple); }
         .about-text strong { color: var(--text); font-weight: 500; }
         
-        /* --- TAGS & TOOLTIPS --- */
         .tags { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
         
         .tag {
@@ -282,7 +552,7 @@
             background: var(--purple); color: white; 
         }
 
-        /* Khung Card con (Tooltip Overlay) */
+
         .tag-tooltip {
             position: absolute;
             bottom: 135%; left: 50%; transform: translateX(-50%) translateY(10px);
@@ -293,14 +563,12 @@
             opacity: 0; visibility: hidden; pointer-events: none;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 10;
         }
-        /* Mũi tên trỏ xuống của Tooltip */
+
         .tag-tooltip::after {
             content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
             border-width: 6px; border-style: solid;
             border-color: var(--border) transparent transparent transparent;
         }
-        
-        /* Bắt cầu (Bridge) để khi di chuột từ Tag lên Tooltip không bị mất hover */
         .tag::before {
             content: ''; position: absolute; top: -20px; left: 0; width: 100%; height: 20px;
         }
@@ -310,7 +578,6 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* Design riêng cho Tooltip của Gaming */
         .game-item {
             position: relative;
             padding: 0.5rem 0.5rem;
@@ -332,8 +599,6 @@
         
         .game-item:hover .g-front { transform: translateY(-100%); }
         .game-item:hover .g-back { transform: translateY(0); }
-
-        /* --- CONNECT LIST --- */
         .connect-list { display: flex; flex-wrap: wrap; gap: 1.5rem; }
         .social-btn {
             display: flex; align-items: center; gap: 0.8rem;
@@ -394,7 +659,6 @@
                 transition: opacity 0.25s ease, transform 0.25s ease;
             }
 
-            /* 2-column mobile/tablet layout: keep floating cards inside viewport */
             .tags .tag:nth-child(odd) .tag-tooltip {
                 left: 0;
                 right: auto;
@@ -447,7 +711,25 @@
 
     <nav>
         <div class="nav-container">
-            <div class="logo">Baro.</div>
+            <div class="logo" id="pcLogo" role="img" aria-label="Interactive 3D PC. Drag to rotate." title="Drag to rotate">
+                <div class="pc-tower" id="pcTower">
+                    <div class="pc-face pc-front">
+                        <span class="front-strip"></span>
+                        <span class="power-light"></span>
+                        <span class="io io-1"></span>
+                        <span class="io io-2"></span>
+                    </div>
+                    <div class="pc-face pc-back"></div>
+                    <div class="pc-face pc-left vent-panel"></div>
+                    <div class="pc-face pc-right glass-panel">
+                        <span class="fan fan-top"></span>
+                        <span class="fan fan-bottom"></span>
+                        <span class="gpu-bar"></span>
+                    </div>
+                    <div class="pc-face pc-top top-vents"></div>
+                    <div class="pc-face pc-bottom"></div>
+                </div>
+            </div>
             <div class="nav-right">
                 <div class="links">
                     <a href="#about">About</a>
@@ -479,7 +761,6 @@
         <div class="container hero-content">
             <div class="hero-text">
                 <h1>Welcome to my wall <br><span>- Baro.</span></h1>
-                <p class="discord-tag">@absolutelynotbaro</p>
             </div>
             <div class="hero-avatar">
                 <img src="avatar.png" alt="Baro">
@@ -499,24 +780,20 @@
             <h2 class="section-title">About Me</h2>
             
             <div class="about-text">
-                <!-- Nội dung đã được chỉnh sửa chuẩn tiếng Anh -->
-                <p><span class="about-name">Vy Gia Bảo</span>Currently based in HCMC. Year 3 at <strong>PTIT</strong> (Posts and Telecommunications Institute of Technology - Học viện Công nghệ Bưu chính Viễn thông).</p>
+                <p><span class="about-name">Vy Gia Bảo</span>Somewhere in HCMC, probably building something. Year 3 at <strong>PTIT</strong> (Posts and Telecommunications Institute of Technology - Học viện Công nghệ Bưu chính Viễn thông).</p>
             </div>
             
             <div class="tags">
-                <!-- Hover vào đây sẽ hiện popup "Currently none." -->
                 <div class="tag">
                     Technology
                     <div class="tag-tooltip">Currently learning <strong>Networking</strong> • C++ • Python • Java • SQL</div>
                 </div>
-                
-                <!-- Hover vào đây sẽ hiện ngành học -->
+
                 <div class="tag">
                     Learning
                     <div class="tag-tooltip">Studying Information Security</div>
                 </div>
                 
-                <!-- Hover thẻ Gaming sẽ bung bảng 2 game, hover vô game sẽ flip tên thành Ingame Name! -->
                 <div class="tag">
                     Gaming
                     <div class="tag-tooltip" style="padding: 0;">
@@ -531,7 +808,6 @@
                     </div>
                 </div>
                 
-                <!-- Thẻ thay thế: Tinkering (Vọc vạch) -->
                 <div class="tag">
                     Tinkering
                     <div class="tag-tooltip">Love tweaking PCs & smartphones.</div>
@@ -578,12 +854,10 @@
         const body = document.body;
         const savedTheme = localStorage.getItem('baro-theme');
 
-        // Restore the user's last selected theme after reload/revisit.
         if (savedTheme === 'light') {
             body.removeAttribute('data-theme');
             themeToggle.checked = false;
         } else {
-            // Dark remains the default for first-time visitors.
             body.setAttribute('data-theme', 'dark');
             themeToggle.checked = true;
         }
@@ -599,6 +873,146 @@
 
             localStorage.setItem('baro-theme', theme);
         });
+
+        // Interactive mini PC logo:
+        // - auto-rotates when idle
+        // - pauses while dragging
+        // - keeps the user's last angle
+        // - continues with inertia after release, then eases back into auto-rotation
+        const pcLogo = document.getElementById('pcLogo');
+        const pcTower = document.getElementById('pcTower');
+
+        let pcDragging = false;
+        let pcLastX = 0;
+        let pcLastY = 0;
+        let pcRotateX = -20;
+        let pcRotateY = 38;
+        let pcVelocityX = 0;
+        let pcVelocityY = 0;
+
+        const pcDragSensitivity = 0.7;
+        const pcAutoRotateSpeed = 0.18;
+        const pcInertiaFriction = 0.94;
+        const pcInertiaStop = 0.015;
+
+        const updatePcRotation = () => {
+            pcTower.style.transform =
+                `rotateX(${pcRotateX}deg) rotateY(${pcRotateY}deg)`;
+        };
+
+        const savedPcRotation = localStorage.getItem('baro-pc-rotation');
+        if (savedPcRotation) {
+            try {
+                const parsedRotation = JSON.parse(savedPcRotation);
+                if (typeof parsedRotation.x === 'number') pcRotateX = parsedRotation.x;
+                if (typeof parsedRotation.y === 'number') pcRotateY = parsedRotation.y;
+            } catch (_) {
+                // Ignore invalid saved data and use the default angle.
+            }
+        }
+
+        const savePcRotation = () => {
+            localStorage.setItem(
+                'baro-pc-rotation',
+                JSON.stringify({ x: pcRotateX, y: pcRotateY })
+            );
+        };
+
+        const animatePc = () => {
+            if (!pcDragging) {
+                const hasInertia =
+                    Math.abs(pcVelocityX) > pcInertiaStop ||
+                    Math.abs(pcVelocityY) > pcInertiaStop;
+
+                if (hasInertia) {
+                    pcRotateX += pcVelocityX;
+                    pcRotateY += pcVelocityY;
+
+                    if (pcRotateX >= 65) {
+                        pcRotateX = 65;
+                        pcVelocityX = 0;
+                    } else if (pcRotateX <= -65) {
+                        pcRotateX = -65;
+                        pcVelocityX = 0;
+                    }
+
+                    pcVelocityX *= pcInertiaFriction;
+                    pcVelocityY *= pcInertiaFriction;
+                } else {
+                    pcVelocityX = 0;
+                    pcVelocityY = 0;
+                    pcRotateY += pcAutoRotateSpeed;
+                }
+
+                updatePcRotation();
+            }
+
+            requestAnimationFrame(animatePc);
+        };
+
+        pcLogo.addEventListener('pointerdown', (event) => {
+            pcDragging = true;
+            pcLastX = event.clientX;
+            pcLastY = event.clientY;
+
+            // Stop old momentum so the new drag fully controls the case.
+            pcVelocityX = 0;
+            pcVelocityY = 0;
+
+            pcTower.style.transition = 'none';
+            pcLogo.setPointerCapture(event.pointerId);
+        });
+
+        pcLogo.addEventListener('pointermove', (event) => {
+            if (!pcDragging) return;
+
+            const deltaX = event.clientX - pcLastX;
+            const deltaY = event.clientY - pcLastY;
+
+            const dragVelocityY = deltaX * pcDragSensitivity;
+            const dragVelocityX = -deltaY * pcDragSensitivity;
+
+            pcRotateY += dragVelocityY;
+            pcRotateX += dragVelocityX;
+            pcRotateX = Math.max(-65, Math.min(65, pcRotateX));
+
+            // Smooth the latest drag speed so release feels natural rather than twitchy.
+            pcVelocityY = pcVelocityY * 0.35 + dragVelocityY * 0.65;
+            pcVelocityX = pcVelocityX * 0.35 + dragVelocityX * 0.65;
+
+            pcLastX = event.clientX;
+            pcLastY = event.clientY;
+            updatePcRotation();
+        });
+
+        const stopPcDrag = (event) => {
+            if (!pcDragging) return;
+
+            pcDragging = false;
+            pcTower.style.transition = '';
+            savePcRotation();
+
+            if (event.pointerId !== undefined && pcLogo.hasPointerCapture(event.pointerId)) {
+                pcLogo.releasePointerCapture(event.pointerId);
+            }
+        };
+
+        pcLogo.addEventListener('pointerup', stopPcDrag);
+        pcLogo.addEventListener('pointercancel', stopPcDrag);
+
+        // Double-click restores the default angle and clears any current momentum.
+        pcLogo.addEventListener('dblclick', () => {
+            pcRotateX = -20;
+            pcRotateY = 38;
+            pcVelocityX = 0;
+            pcVelocityY = 0;
+            pcTower.style.transition = 'transform 300ms cubic-bezier(.2,.8,.2,1)';
+            updatePcRotation();
+            savePcRotation();
+        });
+
+        updatePcRotation();
+        animatePc();
     </script>
 </body>
 </html>
